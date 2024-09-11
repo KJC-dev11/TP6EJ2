@@ -8,13 +8,26 @@ package tp6ej2;
  *
  * @author MOON
  */
+import javax.swing.table.DefaultTableModel;
+import java.util.TreeSet;
+
 public class ConsultaPorRubro extends javax.swing.JInternalFrame {
 
+    private TreeSet<Producto> productos;
     /**
      * Creates new form ConsultaPorRubro
      */
-    public ConsultaPorRubro() {
+    public ConsultaPorRubro(TreeSet<Producto> productos) {
+        this.productos = productos;
         initComponents();
+        TreeSet<String> rubros = new TreeSet<>();
+    for (Producto producto : productos) {
+        rubros.add(producto.getRubro());
+    }
+    
+    for (String rubro : rubros) {
+        jComboBox1.addItem(rubro);
+    }
     }
 
     /**
@@ -46,7 +59,12 @@ public class ConsultaPorRubro extends javax.swing.JInternalFrame {
         jLabel2.setText("Rubro: ");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronica", "Ropa", "Hogar", "Alimentos", "Limpieza", " " }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 170, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -74,6 +92,28 @@ public class ConsultaPorRubro extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0); // Limpiar la tabla antes de agregar los nuevos resultados
+
+    // Obtener el rubro seleccionado
+    String rubroSeleccionado = jComboBox1.getSelectedItem().toString();
+
+    // Filtrar los productos por el rubro seleccionado
+    for (Producto producto : productos) {
+        if (producto.getRubro().equalsIgnoreCase(rubroSeleccionado)) {
+            model.addRow(new Object[]{
+                producto.getCodigo(),
+                producto.getDescripcion(),
+                producto.getPrecio(),
+                producto.getRubro(),
+                producto.getStock()
+            });
+        }
+    }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

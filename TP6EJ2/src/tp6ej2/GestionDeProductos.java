@@ -6,7 +6,8 @@ package tp6ej2;
 
 import javax.swing.ImageIcon;
 import java.awt.Image;
-import java.awt.Graphics;    
+import java.awt.Graphics;
+import java.util.TreeSet;
 /**
  *
  * @author MOON
@@ -14,10 +15,12 @@ import java.awt.Graphics;
 public class GestionDeProductos extends javax.swing.JFrame {
 
     private Image image;
+    private TreeSet<Producto> productos;
     /**
      * Creates new form GestionDeProductos
      */
     public GestionDeProductos() {
+        productos = new TreeSet<>();
         initComponents();
     }
 
@@ -54,11 +57,11 @@ public class GestionDeProductos extends javax.swing.JFrame {
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 802, Short.MAX_VALUE)
+            .addGap(0, 1042, Short.MAX_VALUE)
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 503, Short.MAX_VALUE)
+            .addGap(0, 561, Short.MAX_VALUE)
         );
 
         jMenu1.setText("Administracion");
@@ -113,7 +116,9 @@ public class GestionDeProductos extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(escritorio)
+                .addContainerGap())
         );
 
         pack();
@@ -121,28 +126,20 @@ public class GestionDeProductos extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-         ConsultaPorRubro ConsultaPorRubro = new ConsultaPorRubro();
-
-        escritorio.add(ConsultaPorRubro);
-
-        ConsultaPorRubro.setVisible(true);
+        ConsultaPorRubro consultaPorRubro = new ConsultaPorRubro(productos);
+        escritorio.add(consultaPorRubro);
+        consultaPorRubro.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-        ConsultaPorPrecio ConsultaPorPrecio = new ConsultaPorPrecio();
-
-        escritorio.add(ConsultaPorPrecio);
-
-        ConsultaPorPrecio.setVisible(true);
+        ConsultaPorPrecio consultaPorPrecio = new ConsultaPorPrecio(productos);
+        escritorio.add(consultaPorPrecio);
+        consultaPorPrecio.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-        ConsultaPorNombre consultaPorNombre = new ConsultaPorNombre();
-
+        ConsultaPorNombre consultaPorNombre = new ConsultaPorNombre(productos);
         escritorio.add(consultaPorNombre);
-
         consultaPorNombre.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -200,4 +197,36 @@ public class GestionDeProductos extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     // End of variables declaration//GEN-END:variables
+
+    boolean agregarProducto(Producto nuevoProducto) {
+        return productos.add(nuevoProducto);
+    }
+    
+    public TreeSet<Producto> getProductos() {
+        return productos;
+    }
+    
+    public boolean eliminarProducto(int codigo) {
+        return productos.removeIf(p -> p.getCodigo() == codigo);
+    }
+    
+    public boolean modificarProducto(Producto productoModificado) {
+        Producto productoExistente = buscarProducto(productoModificado.getCodigo());
+        if (productoExistente != null) {
+            productos.remove(productoExistente); 
+            productos.add(productoModificado);    
+            return true;
+        }
+        return false;
+    }
+    
+     public Producto buscarProducto(int codigo) {
+        return productos.stream()
+                .filter(p -> p.getCodigo() == codigo)
+                .findFirst()
+                .orElse(null);
+    }
+     
+     
+    
 }

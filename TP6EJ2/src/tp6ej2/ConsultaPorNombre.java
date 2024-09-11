@@ -8,12 +8,19 @@ package tp6ej2;
  *
  * @author MOON
  */
+
+import javax.swing.table.DefaultTableModel;
+import java.util.TreeSet;
+import javax.swing.JOptionPane;
+
 public class ConsultaPorNombre extends javax.swing.JInternalFrame {
 
+    private TreeSet<Producto> productos;
     /**
      * Creates new form ConsultaPorNombre
      */
-    public ConsultaPorNombre() {
+    public ConsultaPorNombre(TreeSet<Producto> productos) {
+        this.productos = productos;
         initComponents();
     }
 
@@ -28,7 +35,7 @@ public class ConsultaPorNombre extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        Texto = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
@@ -45,7 +52,13 @@ public class ConsultaPorNombre extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Ingrese Descripcion :");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, -1, -1));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 440, -1));
+
+        Texto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Texto, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 440, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -76,13 +89,36 @@ public class ConsultaPorNombre extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void filtrarPorNombre(String descripcion) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Limpiar la tabla antes de agregar los nuevos resultados
+
+        for (Producto producto : productos) {
+            if (producto.getDescripcion().toLowerCase().contains(descripcion)) {
+                model.addRow(new Object[]{
+                    producto.getCodigo(),
+                    producto.getDescripcion(),
+                    producto.getPrecio(),
+                    producto.getRubro(),
+                    producto.getStock()
+                });
+            }
+        }
+    }
+    
+    
+    private void TextoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField Texto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
+

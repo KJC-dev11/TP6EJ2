@@ -8,7 +8,9 @@ package tp6ej2;
  *
  * @author MOON
  */
-public class Producto {
+import java.util.Objects;
+
+public class Producto implements Comparable<Producto> {
     private int codigo;
     private int stock;
     private double precio;
@@ -62,7 +64,35 @@ public class Producto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    @Override
+    public int compareTo(Producto o) {
+        return Integer.compare(this.codigo, o.getCodigo());
+    }
     
+     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Producto producto = (Producto) o;
+        return codigo == producto.codigo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codigo);
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "codigo=" + codigo +
+                ", descripcion='" + descripcion + '\'' +
+                ", precio=" + precio +
+                ", stock=" + stock +
+                ", rubro='" + rubro + '\'' +
+                '}';
+    }
     
     
 }

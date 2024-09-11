@@ -4,6 +4,9 @@
  */
 package tp6ej2;
 
+import javax.swing.table.DefaultTableModel;
+import java.util.TreeSet;
+
 /**
  *
  * @author MOON
@@ -13,7 +16,10 @@ public class ConsultaPorPrecio extends javax.swing.JInternalFrame {
     /**
      * Creates new form ConsultaPorPrecio
      */
-    public ConsultaPorPrecio() {
+    private TreeSet<Producto> productos;
+    
+    public ConsultaPorPrecio(TreeSet<Producto> productos) {
+        this.productos = productos;
         initComponents();
     }
 
@@ -52,7 +58,19 @@ public class ConsultaPorPrecio extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Entre $");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, -1, -1));
+
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -84,6 +102,38 @@ public class ConsultaPorPrecio extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+        private void filtrarPorPrecio() {
+        try {
+            double precioMin = Double.parseDouble(jTextField1.getText());
+            double precioMax = Double.parseDouble(jTextField2.getText());
+
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0); // Limpiar la tabla antes de agregar los nuevos resultados
+
+            for (Producto producto : productos) {
+                if (producto.getPrecio() >= precioMin && producto.getPrecio() <= precioMax) {
+                    model.addRow(new Object[]{
+                        producto.getCodigo(),
+                        producto.getDescripcion(),
+                        producto.getPrecio(),
+                        producto.getRubro(),
+                        producto.getStock()
+                    });
+                }
+            }
+        } catch (NumberFormatException e) {
+            // Mostrar un mensaje si los valores ingresados no son números
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor ingrese valores válidos para el precio.");
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
